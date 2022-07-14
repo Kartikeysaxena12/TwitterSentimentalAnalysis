@@ -10,10 +10,10 @@ plt.style.use('fivethirtyeight')
 APIkey = "3OMBrpi6hg5kvQ3Zb1LMFwaEQ"
 APISecretKey = "f9fEg3dmaEtqaoZW90MqvElUBV7LvKHOg2zbOPDpmPBvD8BYFt"
 accessToken = "1529864260473409545-9wzTxuhcOAc5xwvtpeHYw51NpsQby3"
-accessTokenSecreat = "ffiOk1LMVMggUkFvMQKTVtroqQOMhJVfGc1605Iv23Tqy"
+accessTokenSecret = "ffiOk1LMVMggUkFvMQKTVtroqQOMhJVfGc1605Iv23Tqy"
 # create the object for authentication
 Auth = tweepy.OAuthHandler(APIkey, APISecretKey)
-Auth.set_access_token(accessToken, accessTokenSecreat)
+Auth.set_access_token(accessToken, accessTokenSecret)
 api = tweepy.API(Auth)
 # display
 posts = api.user_timeline(
