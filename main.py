@@ -24,34 +24,33 @@ for tweet in posts[:10]:  # just want to see the top 10 from 100
     print(str(i) + ') ' + tweet.full_text + '\n')
     i = i+1
 
-# Creating dataframe with a column called tweets
-df = pd.DataFrame([tweet.full_text for tweet in posts], columns=['Tweets'])
+# Creating dataframe with a column having name "tweets"
+df = pd.DataFrame([tweet.full_text for tweet in posts], columns=['Tweet'])
 print(df)
 
 # make a function to clean tweets
 
 
-def cleanTxt(text):
-    text = re.sub('@[A-Za-z0-9]+', '', text)  # removing mentions
-    text = re.sub("#", '', text)  # removing #
-    text = re.sub('RT[\s]+', '', text)  # removing Retweets
-    text = re.sub('https?:\/\/\S+', '', text)  # removing links
-    return text
+def cleanTxt(texts):
+    texts = re.sub('@[A-Za-z0-9]+', '', texts)  # removing mentions
+    texts = re.sub("#", '', texts)  # removing #
+    texts = re.sub('RT[\s]+', '', texts)  # removing Retweets
+    texts = re.sub('https?:\/\/\S+', '', texts)  # removing links
+    return texts
 
 
-df['Tweets'] = df['Tweets'].apply(cleanTxt)
+df['Tweet'] = df['Tweet'].apply(cleanTxt)
 print(df)
-
 # sentiments
-analysis = TextBlob("Today was the best day ")
+analysis = TextBlob("Yesterday was a brilliant day")
 analysis.sentiment
-# create a function to get the subjectivity of all the tweets
+# creating function to get the tweet subjectivity
 
 
 def get_subjectivity(text):
     return TextBlob(text).sentiment.subjectivity
 
-# create a function to get the Polarity of all the tweets
+# creating function to get the tweet Polarity
 
 
 def get_polarity(text):
@@ -59,21 +58,21 @@ def get_polarity(text):
 
 
 # create 2 columns 'Subjectivity' and 'Polarity'
-df['Subjectivity'] = df['Tweets'].apply(get_subjectivity)
-df['Polarity'] = df['Tweets'].apply(get_polarity)
+df['Subjectivity'] = df['Tweet'].apply(get_subjectivity)
+df['Polarity'] = df['Tweet'].apply(get_polarity)
 print(df)
 
 # Lets do Analysis
 
 # Word Cloud Visualization
-allwords = ' '.join([i for i in df['Tweets']])
+allwords = ' '.join([i for i in df['Tweet']])
 Cloud = WordCloud(width=500, height=300, random_state=0,
                   max_font_size=100).generate(allwords)
 
 plt.imshow(Cloud)
 plt.show()
 
-# Create a function to compute negative neutral and positive
+# Creating function to process positive,neutral and negative
 
 
 def getAnalysis(ranking):
@@ -100,18 +99,17 @@ plt.figure(figsize=(8, 6))
 for i in range(0, df.shape[0]):
     plt.scatter(df['Polarity'][i], df['Subjectivity'][i], color='Blue')
 
-plt.title("Sentiment Analysis")
+plt.title("Sentimental Analyze")
 plt.xlim(-1, 1)
-plt.xlabel('Polarity')
-plt.ylabel('Subjectivity')
+plt.xlabel('Polarity(x axis)')
+plt.ylabel('Subjectivity(y axis)')
 plt.show()
-
-# Only 3 neutral it is showing because it is overlapping
+# Only 3 neutral tweets would be shown because of data overlap
 
 df['Analysis'].value_counts().plot(kind='bar')
-plt.title("Sentiment Analysis")
-plt.xlabel('Polarity')
-plt.ylabel('Count')
+plt.title("Sentimental Analyze")
+plt.xlabel('Polarity(x axis)')
+plt.ylabel('Count(y axis)')
 plt.show()
 
 # Lets get positive tweets only
@@ -119,7 +117,7 @@ i = 1
 sortedDF = df.sort_values(by=['Polarity'], ascending=False)
 for j in range(0, sortedDF.shape[0]):
     if (sortedDF['Analysis'][j] == 'Positive'):
-        print(str(i) + ') ' + sortedDF['Tweets'][j])
+        print(str(i) + ') ' + sortedDF['Tweet'][j])
         print()
         i = i+1
 
@@ -128,7 +126,7 @@ i = 1
 sortedDF = df.sort_values(by=['Polarity'], ascending=False)
 for j in range(0, sortedDF.shape[0]):
     if (sortedDF['Analysis'][j] == 'Negative'):
-        print(str(i) + ') ' + sortedDF['Tweets'][j])
+        print(str(i) + ') ' + sortedDF['Tweet'][j])
         print()
         i = i+1
 
@@ -138,6 +136,6 @@ i = 1
 sortedDF = df.sort_values(by=['Polarity'], ascending=False)
 for j in range(0, sortedDF.shape[0]):
     if (sortedDF['Analysis'][j] == 'Neutral'):
-        print(str(i) + ') ' + sortedDF['Tweets'][j])
+        print(str(i) + ') ' + sortedDF['Tweet'][j])
         print()
         i = i+1
